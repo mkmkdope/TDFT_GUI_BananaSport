@@ -77,6 +77,13 @@
                     <p class="position">Fitness Consultant</p>
                     <p>Certified personal trainer who helps customers find the right equipment for their fitness goals.</p>
                 </div>
+                
+                 <div class="team-member">
+                    <img src="images/team4.jpg" alt="E-Hern" class="team-img">
+                    <h3>Andy Lao</h3>
+                    <p class="position">Fitness Consultant</p>
+                    <p>Certified personal trainer who helps customers find the right equipment for their fitness goals.</p>
+                </div>
             </div>
         </div>
     </section>
