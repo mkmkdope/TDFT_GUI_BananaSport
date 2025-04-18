@@ -24,4 +24,9 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     
+    <context-param>
+        <param-name>uploadPath</param-name>
+        <param-value>C:\Users\ASUS\Desktop\CustCom\web\images</param-value>
+    </context-param>
+
 </web-app> 

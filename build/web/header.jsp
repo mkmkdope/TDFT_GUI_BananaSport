@@ -24,13 +24,13 @@
                 </div>
                 <ul class="nav-links" id="navLinks">
                     <li><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/products.jsp">Products</a></li>
-                    <li><a href="${pageContext.request.contextPath}/promotions.jsp">Promotions</a></li>
-                    <li><a href="${pageContext.request.contextPath}/about.jsp">About Us</a></li>
-                    <li><a href="${pageContext.request.contextPath}/contact.jsp">Contact</a></li>
+                    <li><a href="${pageContext.request.contextPath}/showProd">Products</a></li>
+                    <li><a href="${pageContext.request.contextPath}/staticView/promotions.jsp">Promotions</a></li>
+                    <li><a href="${pageContext.request.contextPath}/staticView/about.jsp">About Us</a></li>
+                    <li><a href="${pageContext.request.contextPath}/staticView/contact.jsp">Contact</a></li>
                     <li>
-                        <form action="${pageContext.request.contextPath}/search" method="get" class="search-form">
-                            <input type="text" name="query" placeholder="Search products..." value="${requestScope.searchQuery}">
+                        <form action="searchProd" method="get" class="search-form">
+                            <input type="text" id="search" name="search" placeholder="Search products..." value="${requestScope.searchparameter}">
                             <button type="submit"><i class="fas fa-search"></i></button>
                         </form>
                     </li>
