@@ -20,13 +20,23 @@
         <param-value>© 2023 Banana Sports. All rights reserved.</param-value>
     </context-param>
     
+    <!-- Add to Cart Mapping -->
+    <servlet>
+        <servlet-name>AddCart</servlet-name>
+        <jsp-file>/myCustomer/addToCart.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddCart</servlet-name>
+        <url-pattern>/AddCart</url-pattern>
+    </servlet-mapping>
+    
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     
     <context-param>
         <param-name>uploadPath</param-name>
-        <param-value>C:\Users\ASUS\Desktop\CustCom\web\images</param-value>
+        <param-value>C:\Users\ASUS\Desktop\OMG\web\images</param-value>
     </context-param>
 
 </web-app> 

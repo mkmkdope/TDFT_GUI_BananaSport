@@ -34,7 +34,7 @@
                             <button type="submit"><i class="fas fa-search"></i></button>
                         </form>
                     </li>
-                    <li><a href="${pageContext.request.contextPath}/cart.jsp"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                    <li><a href="${pageContext.request.contextPath}/myCustomer/cart.jsp"><i class="fas fa-shopping-cart"></i> Cart</a></li>
                     <li><a href="${pageContext.request.contextPath}/login.jsp"><i class="fas fa-user"></i> Login</a></li>
                 </ul>
             </nav>
