@@ -79,7 +79,7 @@
     </head>
     <body>
         <div class="container">
-            <a href="controlPanelM.jsp">Home</a>
+            <button style="background-color: black; width: 50%;" onclick="window.history.back()">Back to Previous Page</button>
             <h1>Add a New Product</h1>
 
             <form action="addProdM" method="POST" enctype="multipart/form-data"> 

@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<jsp:include page="/header.jsp">
+    <jsp:param name="pageTitle" value="Login"/>
+</jsp:include>
 <html>
 <head>
     <title>Login</title>
@@ -54,7 +57,7 @@
     </div>
 
     <!-- Login form -->
-    <form action="${pageContext.request.contextPath}/LoginServlet" method="post">
+    <form action="${pageContext.request.contextPath}/customerLogin" method="post">
         <label>Username:</label>
         <input type="text" name="username" required />
 
@@ -64,7 +67,7 @@
         <input type="submit" value="Login" />
     </form>
 
-    <p>Don't have an account? <a href="register.jsp">Register here</a></p>
+    <p>Don't have an account? <a href="registerC.jsp">Register here</a></p>
 
 </body>
 </html>

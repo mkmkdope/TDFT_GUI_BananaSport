@@ -202,6 +202,85 @@
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
                 background: linear-gradient(to right, #FFB300, #FFD54F);
             }
+
+            /* Promotion card styling */
+            .promotion-section {
+                margin: 20px 0;
+                padding: 15px;
+                background-color: #fff9c4;
+                border-radius: 8px;
+                border: 1px solid #ffd600;
+            }
+            
+            .promotion-info {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                background-color: white;
+                border-radius: 6px;
+                margin-bottom: 10px;
+            }
+            
+            .promotion-details {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .promotion-name {
+                font-weight: bold;
+                font-size: 18px;
+                color: #333;
+            }
+            
+            .promotion-value {
+                font-size: 16px;
+                color: #e65100;
+            }
+            
+            .promotion-remove {
+                background-color: #f44336;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 5px 10px;
+                cursor: pointer;
+            }
+            
+            .discount-row {
+                background-color: #fff8e1;
+                font-weight: bold;
+            }
+            
+            .promotion-badge {
+                display: inline-block;
+                padding: 5px 10px;
+                background-color: #e65100;
+                color: white;
+                border-radius: 20px;
+                font-size: 14px;
+                margin-left: 10px;
+            }
+            
+            .promotion-alert {
+                padding: 10px;
+                margin: 10px 0;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+            
+            .alert-info {
+                background-color: #e3f2fd;
+                border: 1px solid #2196f3;
+                color: #0d47a1;
+            }
+            
+            .alert-warning {
+                background-color: #fff8e1;
+                border: 1px solid #ffc107;
+                color: #ff6f00;
+            }
         </style>
     </head>
     <body>
@@ -212,6 +291,8 @@
             <%
                 String message = (String) session.getAttribute("message");
                 String error = (String) session.getAttribute("error");
+                String successMessage = (String) request.getAttribute("successMessage");
+                
                 if (message != null) {
             %>
             <div class="alert alert-success" style="background-color: #dff0d8; color: #3c763d; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
@@ -228,6 +309,13 @@
             <%
                     session.removeAttribute("error");
                 }
+                if (successMessage != null) {
+            %>
+            <div class="alert alert-success" style="background-color: #dff0d8; color: #3c763d; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+                <%= successMessage %>
+            </div>
+            <%
+                }
             %>
 
             <%
@@ -237,12 +325,13 @@
                 // Get current customer ID from session, or use a default for guests
                 Integer customerId = (Integer) session.getAttribute("customerId");
                 if (customerId == null) {
-                    // If not logged in, could redirect to login or use a guest ID
-                    customerId = 1; // TODO: Handle guest users or require login
+                    // If not logged in, redirect to login page
+                    response.sendRedirect(request.getContextPath() + "/login.jsp?redirect=myCustomer/cart.jsp");
+                    return;
                 }
 
                 String sqlQuery = "SELECT c.product_id, p.PRODUCT_NAME, c.product_quantity, "
-                        + "p.PRODUCT_PRICE, p.PRODUCT_POPULARITY, p.IMAGELINK "
+                        + "p.PRODUCT_PRICE, p.PRODUCT_POPULARITY, p.IMAGELINK, p.PRODUCT_CATEGORY "
                         + "FROM Carts c "
                         + "JOIN PRODUCTS p ON c.product_id = p.PRODUCT_ID "
                         + "WHERE c.customer_id = ?";
@@ -250,8 +339,20 @@
                 Connection conn = null;
                 ResultSet rs = null;
                 PreparedStatement pstmt = null;
+                double subtotalAmount = 0.0;
+                double discountAmount = 0.0;
                 double totalAmount = 0.0;
                 boolean hasItems = false;  // Flag to check if cart has items
+                
+                // Get applied promotion from session
+                Integer appliedPromotionId = (Integer) session.getAttribute("appliedPromotionId");
+                String appliedPromotionName = (String) session.getAttribute("appliedPromotionName");
+                String appliedPromotionType = (String) session.getAttribute("appliedPromotionType");
+                Double appliedDiscountValue = (Double) session.getAttribute("appliedDiscountValue");
+                Double appliedMinPurchase = (Double) session.getAttribute("appliedMinPurchase");
+                
+                boolean promotionApplied = false;
+                String promotionMessage = null;
 
                 try {
                     // Load the Derby driver
@@ -272,6 +373,35 @@
 
                     if (hasItems) {
             %>
+            
+            <!-- Display applied promotion if any -->
+            <% if (appliedPromotionId != null && appliedPromotionName != null) { %>
+            <div class="promotion-section">
+                <h3><i class="fas fa-tag"></i> Applied Promotion</h3>
+                <div class="promotion-info">
+                    <div class="promotion-details">
+                        <span class="promotion-name"><%= appliedPromotionName %></span>
+                        <% if ("percentage".equals(appliedPromotionType)) { %>
+                            <span class="promotion-value"><%= appliedDiscountValue.intValue() %>% discount</span>
+                        <% } else if ("fixed_amount".equals(appliedPromotionType)) { %>
+                            <span class="promotion-value">RM <%= String.format("%.2f", appliedDiscountValue) %> off</span>
+                        <% } else if ("free_shipping".equals(appliedPromotionType)) { %>
+                            <span class="promotion-value">Free shipping on orders over RM <%= String.format("%.2f", appliedMinPurchase) %></span>
+                        <% } %>
+                    </div>
+                    <form action="${pageContext.request.contextPath}/RemovePromotion" method="post">
+                        <button type="submit" class="promotion-remove">Remove</button>
+                    </form>
+                </div>
+            </div>
+            <% } else { %>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <a href="${pageContext.request.contextPath}/myCustomer/promotions.jsp" class="btn-proceed" style="background: linear-gradient(to right, #4CAF50, #8BC34A); display: inline-block;">
+                    <i class="fas fa-tag"></i> Browse Available Promotions
+                </a>
+            </div>
+            <% } %>
+            
             <table>
                 <thead>
                     <tr>
@@ -290,11 +420,31 @@
                         while (rs.next()) {
                             String productId = rs.getString("product_id");  // Use String since product_id is VARCHAR
                             String productName = rs.getString("PRODUCT_NAME");
+                            String productCategory = rs.getString("PRODUCT_CATEGORY");
                             int quantity = rs.getInt("product_quantity");
                             double price = rs.getDouble("PRODUCT_PRICE");
                             String imageLink = rs.getString("IMAGELINK");  // Retrieve the image link
                             double itemTotal = quantity * price;
-                            totalAmount += itemTotal;
+                            subtotalAmount += itemTotal;
+                            
+                            // Fetch available product quantity
+                            PreparedStatement availQtyStmt = null;
+                            ResultSet availQtyRs = null;
+                            int availableQuantity = 0;
+                            
+                            try {
+                                String availQtyQuery = "SELECT PRODUCT_QTY FROM PRODUCTS WHERE PRODUCT_ID = ?";
+                                availQtyStmt = conn.prepareStatement(availQtyQuery);
+                                availQtyStmt.setString(1, productId);
+                                availQtyRs = availQtyStmt.executeQuery();
+                                
+                                if (availQtyRs.next()) {
+                                    availableQuantity = availQtyRs.getInt("PRODUCT_QTY");
+                                }
+                            } finally {
+                                if (availQtyRs != null) availQtyRs.close();
+                                if (availQtyStmt != null) availQtyStmt.close();
+                            }
                     %>
                     <tr>
                         <td><%= productId%></td>
@@ -308,9 +458,14 @@
                                     <input type="hidden" name="productId" value="<%= productId%>">
                                     <input type="hidden" name="action" value="update">
                                     <button type="button" onclick="changeQuantity('<%= productId%>', -1)" class="btn-quantity"><i class="fa-solid fa-minus"></i></button>
-                                    <input type="text" name="quantity" id="qty-<%= productId%>" value="<%= quantity%>" readonly class="quantity-input">
-                                    <button type="button" onclick="changeQuantity('<%= productId%>', 1)" class="btn-quantity"><i class="fa-solid fa-plus"></i></button>
+                                    <input type="text" name="quantity" id="qty-<%= productId%>" value="<%= quantity%>" readonly class="quantity-input" data-max-qty="<%= availableQuantity %>">
+                                    <button type="button" onclick="changeQuantity('<%= productId%>', 1)" class="btn-quantity" <%= quantity >= availableQuantity ? "disabled style='opacity: 0.5; cursor: not-allowed;'" : "" %>><i class="fa-solid fa-plus"></i></button>
                                 </form>
+                                <% if (quantity >= availableQuantity) { %>
+                                <div style="font-size: 12px; color: #ff0000; margin-top: 5px;">Max quantity reached</div>
+                                <% } else { %>
+                                <div style="font-size: 12px; color: #666; margin-top: 5px;"><%= availableQuantity - quantity %> more available</div>
+                                <% } %>
                             </div>
                         </td>
                         <td>RM <%= String.format("%.2f", price)%></td>
@@ -327,7 +482,47 @@
                     </tr>
                     <%
                         }
+                        
+                        // Calculate discount if promotion is applied
+                        if (appliedPromotionId != null && appliedPromotionName != null) {
+                            if (subtotalAmount >= appliedMinPurchase) {
+                                if ("percentage".equals(appliedPromotionType)) {
+                                    discountAmount = subtotalAmount * (appliedDiscountValue / 100.0);
+                                    promotionApplied = true;
+                                } else if ("fixed_amount".equals(appliedPromotionType)) {
+                                    discountAmount = appliedDiscountValue;
+                                    promotionApplied = true;
+                                } else if ("free_shipping".equals(appliedPromotionType)) {
+                                    // Free shipping handled at checkout
+                                    promotionApplied = true;
+                                    promotionMessage = "Free shipping will be applied at checkout";
+                                }
+                            } else {
+                                promotionMessage = "You need to spend RM " + String.format("%.2f", (appliedMinPurchase - subtotalAmount)) + " more to qualify for this promotion.";
+                            }
+                        }
+                        
+                        // Calculate final total
+                        totalAmount = subtotalAmount - discountAmount;
                     %>
+                    
+                    <tr class="total-row">
+                        <td colspan="5" style="text-align: right;"><strong>Subtotal:</strong></td>
+                        <td><strong>RM <%= String.format("%.2f", subtotalAmount)%></strong></td>
+                        <td></td>
+                    </tr>
+                    
+                    <% if (promotionApplied) { %>
+                    <tr class="discount-row">
+                        <td colspan="5" style="text-align: right;">
+                            <strong>Discount:</strong>
+                            <span class="promotion-badge"><%= appliedPromotionName %></span>
+                        </td>
+                        <td><strong>- RM <%= String.format("%.2f", discountAmount)%></strong></td>
+                        <td></td>
+                    </tr>
+                    <% } %>
+                    
                     <tr class="total-row">
                         <td colspan="5" style="text-align: right;"><strong>Total Amount:</strong></td>
                         <td><strong>RM <%= String.format("%.2f", totalAmount)%></strong></td>
@@ -335,9 +530,22 @@
                     </tr>
                 </tbody>
             </table>
+            
+            <% if (promotionMessage != null) { %>
+            <div class="promotion-alert <%= promotionApplied ? "alert-info" : "alert-warning" %>">
+                <i class="<%= promotionApplied ? "fas fa-info-circle" : "fas fa-exclamation-triangle" %>"></i>
+                <%= promotionMessage %>
+            </div>
+            <% } %>
 
             <div style="text-align: right; margin-top: 20px;">
                 <form action="payment.jsp" method="post">
+                    <input type="hidden" name="subtotal" value="<%= subtotalAmount %>">
+                    <input type="hidden" name="discount" value="<%= discountAmount %>">
+                    <input type="hidden" name="total" value="<%= totalAmount %>">
+                    <% if (promotionApplied && "free_shipping".equals(appliedPromotionType)) { %>
+                        <input type="hidden" name="freeShipping" value="true">
+                    <% } %>
                     <button type="submit" class="btn-proceed">🛍️ Proceed to Payment</button>
                 </form>
             </div>
@@ -385,18 +593,21 @@
             // Get the input field for the product
             var qtyField = document.getElementById('qty-' + productId);
             var currentQty = parseInt(qtyField.value);
+            var maxQty = parseInt(qtyField.getAttribute('data-max-qty'));
 
             // Update the quantity
             var newQty = currentQty + change;
 
-            // Ensure the quantity does not go below 0
-            if (newQty >= 0) {
+            // Ensure the quantity does not go below 0 or above max available
+            if (newQty >= 0 && newQty <= maxQty) {
                 qtyField.value = newQty;
+                
+                // Now submit the form automatically after updating the quantity
+                var form = document.getElementById('updateForm-' + productId);
+                form.submit();
+            } else if (newQty > maxQty) {
+                alert("Sorry, only " + maxQty + " units are available in stock.");
             }
-
-            // Now submit the form automatically after updating the quantity
-            var form = document.getElementById('updateForm-' + productId);
-            form.submit();
         }
 
         // Confirm the removal of a product before submitting the form

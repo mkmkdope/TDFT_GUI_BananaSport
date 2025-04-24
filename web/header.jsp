@@ -10,6 +10,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .welcome-user {
+            color: black;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <!-- Header Section -->
@@ -25,7 +63,7 @@
                 <ul class="nav-links" id="navLinks">
                     <li><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
                     <li><a href="${pageContext.request.contextPath}/showProd">Products</a></li>
-                    <li><a href="${pageContext.request.contextPath}/staticView/promotions.jsp">Promotions</a></li>
+                    <li><a href="${pageContext.request.contextPath}/myCustomer/promotions.jsp">Promotions</a></li>
                     <li><a href="${pageContext.request.contextPath}/staticView/about.jsp">About Us</a></li>
                     <li><a href="${pageContext.request.contextPath}/staticView/contact.jsp">Contact</a></li>
                     <li>
@@ -35,7 +73,19 @@
                         </form>
                     </li>
                     <li><a href="${pageContext.request.contextPath}/myCustomer/cart.jsp"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-                    <li><a href="${pageContext.request.contextPath}/login.jsp"><i class="fas fa-user"></i> Login</a></li>
+                    
+                    <% if (session.getAttribute("loggedIn") != null && (Boolean) session.getAttribute("loggedIn")) { %>
+                        <li class="dropdown">
+                            <a href="#"><i class="fas fa-user"></i> <span class="welcome-user">Hi, <%= session.getAttribute("username") %></span></a>
+                            <div class="dropdown-content">
+                                <a href="${pageContext.request.contextPath}/myCustomer/profile.jsp">My Profile</a>
+                                <a href="${pageContext.request.contextPath}/myCustomer/orders.jsp">My Orders</a>
+                                <a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a>
+                            </div>
+                        </li>
+                    <% } else { %>
+                        <li><a href="${pageContext.request.contextPath}/login.jsp"><i class="fas fa-user"></i> Login</a></li>
+                    <% } %>
                 </ul>
             </nav>
         </div>

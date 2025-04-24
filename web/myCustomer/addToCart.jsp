@@ -31,16 +31,44 @@
         // Establish database connection using DBConnection
         conn = dbConnection.getConnection();
         
+        // Check product availability first
+        String checkProductQuery = "SELECT PRODUCT_QTY FROM PRODUCTS WHERE PRODUCT_ID = ?";
+        pstmt = conn.prepareStatement(checkProductQuery);
+        pstmt.setString(1, productId);
+        rs = pstmt.executeQuery();
+        
+        if (!rs.next()) {
+            throw new Exception("Product not found");
+        }
+        
+        int availableQuantity = rs.getInt("PRODUCT_QTY");
+        
+        if (availableQuantity <= 0) {
+            session.setAttribute("error", "Sorry, this product is out of stock.");
+            response.sendRedirect(request.getContextPath() + "/myCustomer/cart.jsp");
+            return;
+        }
+        
         // First, check if the product exists in the Carts table for this customer
         String checkCartQuery = "SELECT product_quantity FROM Carts WHERE product_id = ? AND customer_id = ?";
+        if (pstmt != null) pstmt.close();
         pstmt = conn.prepareStatement(checkCartQuery);
         pstmt.setString(1, productId);
         pstmt.setInt(2, customerId);
+        rs.close();
         rs = pstmt.executeQuery();
         
         if (rs.next()) {
             // Product already in cart, update quantity
             int currentQuantity = rs.getInt("product_quantity");
+            
+            // Check if new quantity would exceed available stock
+            if (currentQuantity + 1 > availableQuantity) {
+                session.setAttribute("message", "Maximum available quantity reached for this product.");
+                response.sendRedirect(request.getContextPath() + "/myCustomer/cart.jsp");
+                return;
+            }
+            
             String updateCartQuery = "UPDATE Carts SET product_quantity = ? WHERE product_id = ? AND customer_id = ?";
             
             // Close the previous statement and create a new one

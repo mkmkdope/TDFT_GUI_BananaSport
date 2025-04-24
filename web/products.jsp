@@ -33,7 +33,6 @@
                     <li><a href="showProd?category=Strength Training" class="<%= "Strength Training".equals(category) ? "active" : ""%>">Strength Training</a></li>
                     <li><a href="showProd?category=Yoga" class="<%= "Yoga".equals(category) ? "active" : ""%>">Yoga & Pilates</a></li>
                     <li><a href="showProd?category=Accessories" class="<%= "Accessories".equals(category) ? "active" : ""%>">Accessories</a></li>
-                    <li><a href="showProd?category=clearance" class="<%= "clearance".equals(category) ? "active" : ""%>">Clearance</a></li>
                 </ul>
             </div>
                 
@@ -75,8 +74,6 @@
                     out.print("Yoga & Pilates");
                 } else if (category.equals("Accessories")) {
                     out.print("Accessories");
-                } else if (category.equals("clearance")) {
-                    out.print("Clearance Items");
                 } else {
                     out.print("Products");
                 }

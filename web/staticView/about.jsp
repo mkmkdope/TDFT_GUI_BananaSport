@@ -15,12 +15,12 @@
         <div class="container">
             <div class="about-content">
                 <div class="about-image">
-                    <img src="images/shop.jpg" alt="Our Store" class="img-responsive">
+                    <img src="../images/shop.jpg" alt="Our Store" class="img-responsive">
                 </div>
                 <div class="about-text">
                     <h2>Our Story</h2>
                     <p>
-                        Founded in 2010, Banana Sports began as a small fitness equipment shop with a big dream: 
+                        Founded in 2010, Banana Sport began as a small fitness equipment shop with a big dream: 
                         to make high-quality fitness equipment accessible to everyone. Our founder, John Banana, was a fitness 
                         enthusiast who struggled to find reliable equipment at reasonable prices.
                     </p>
@@ -44,46 +44,40 @@
             <h2 class="section-title">Meet Our Team</h2>
             <div class="team-grid">
                 <div class="team-member">
-                    <img src="images/mk.png" alt="Ming Kang" class="team-img">
+                    <img src="../images/cat.png" alt="Ming Kang" class="team-img">
                     <h3>Ming Kang</h3>
-                    <p class="position">Founder & CEO</p>
-                    <p>A fitness enthusiast with over 20 years of experience in the fitness industry.</p>
+                    <p class="position">Leader</p>
+                    <p>Work 24 hours to complete the assignment.</p>
                 </div>
                 
                 <div class="team-member">
-                    <img src="images/team2.jpg" alt="Yu Hang" class="team-img">
+                    <img src="../images/cat.png" alt="Yu Hang" class="team-img">
                     <h3>Yu Hang</h3>
                     <p class="position">Head of Product</p>
                     <p>Former professional athlete with a keen eye for quality fitness equipment.</p>
                 </div>
                 
                 <div class="team-member">
-                    <img src="images/team3.jpg" alt="Yae Wen" class="team-img">
+                    <img src="../images/cat.png" alt="Yae Wen" class="team-img">
                     <h3>Yea Wen</h3>
                     <p class="position">Customer Service Manager</p>
                     <p>Dedicated to ensuring every customer has an exceptional shopping experience.</p>
                 </div>
                 
                 <div class="team-member">
-                    <img src="images/team4.jpg" alt="Hong Yi" class="team-img">
+                    <img src="../images/cat.png" alt="Hong Yi" class="team-img">
                     <h3>Hong Yi</h3>
-                    <p class="position">Fitness Consultant</p>
+                    <p class="position">Human Resources Manager</p>
                     <p>Certified personal trainer who helps customers find the right equipment for their fitness goals.</p>
                 </div>
                 
                 <div class="team-member">
-                    <img src="images/team4.jpg" alt="E-Hern" class="team-img">
+                    <img src="../images/cat.png" alt="E-Hern" class="team-img">
                     <h3>E-Hern</h3>
-                    <p class="position">Fitness Consultant</p>
+                    <p class="position">Head of Finance</p>
                     <p>Certified personal trainer who helps customers find the right equipment for their fitness goals.</p>
                 </div>
                 
-                 <div class="team-member">
-                    <img src="images/team4.jpg" alt="E-Hern" class="team-img">
-                    <h3>Andy Lao</h3>
-                    <p class="position">Fitness Consultant</p>
-                    <p>Certified personal trainer who helps customers find the right equipment for their fitness goals.</p>
-                </div>
             </div>
         </div>
     </section>

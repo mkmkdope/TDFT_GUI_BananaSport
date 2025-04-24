@@ -41,15 +41,43 @@ public class CartOperationServlet extends HttpServlet {
             if ("update".equals(action)) {
                 // Update quantity in the cart
                 int newQuantity = Integer.parseInt(request.getParameter("quantity"));
-
-                String updateQuery = "UPDATE Carts SET product_quantity = ? WHERE product_id = ? AND customer_id = ?";
-                pstmt = conn.prepareStatement(updateQuery);
-                pstmt.setInt(1, newQuantity);
-                pstmt.setString(2, productId);
-                pstmt.setInt(3, customerId);
-                pstmt.executeUpdate();
-
-                session.setAttribute("message", "Cart updated successfully!");
+                
+                // Check if the new quantity exceeds the available product quantity
+                String checkStockQuery = "SELECT PRODUCT_QTY FROM PRODUCTS WHERE PRODUCT_ID = ?";
+                pstmt = conn.prepareStatement(checkStockQuery);
+                pstmt.setString(1, productId);
+                rs = pstmt.executeQuery();
+                
+                if (rs.next()) {
+                    int availableQuantity = rs.getInt("PRODUCT_QTY");
+                    
+                    if (newQuantity > availableQuantity) {
+                        // If requested quantity exceeds available stock, set to maximum available
+                        newQuantity = availableQuantity;
+                        session.setAttribute("message", "Quantity adjusted to maximum available stock (" + availableQuantity + ")");
+                    }
+                }
+                
+                if (newQuantity <= 0) {
+                    // If quantity is zero or negative, remove the item from cart
+                    String deleteQuery = "DELETE FROM Carts WHERE product_id = ? AND customer_id = ?";
+                    pstmt = conn.prepareStatement(deleteQuery);
+                    pstmt.setString(1, productId);
+                    pstmt.setInt(2, customerId);
+                    pstmt.executeUpdate();
+                    
+                    session.setAttribute("message", "Product removed from cart as quantity was set to zero.");
+                } else {
+                    // Update the cart with the validated quantity
+                    String updateQuery = "UPDATE Carts SET product_quantity = ? WHERE product_id = ? AND customer_id = ?";
+                    pstmt = conn.prepareStatement(updateQuery);
+                    pstmt.setInt(1, newQuantity);
+                    pstmt.setString(2, productId);
+                    pstmt.setInt(3, customerId);
+                    pstmt.executeUpdate();
+                    
+                    session.setAttribute("message", "Cart updated successfully!");
+                }
             } else if ("remove".equals(action)) {
                 // Remove item from the cart
                 String deleteQuery = "DELETE FROM Carts WHERE product_id = ? AND customer_id = ?";
