@@ -3,7 +3,7 @@
     <!-- Please update the images path -->
     <context-param>
         <param-name>uploadPath</param-name>
-        <param-value>C:\Users\ASUS\Desktop\BananaSport\web\images</param-value>
+        <param-value>C:\Users\Admin\OneDrive\文档\GitHub\BananaSport\web\images</param-value>
     </context-param>
     <session-config>
         <session-timeout>30</session-timeout>

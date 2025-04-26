@@ -8,10 +8,13 @@ import util.DBConnection;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -21,6 +24,10 @@ import java.sql.Timestamp;
  *
  * @author Admin
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024,  // 1MB
+                 maxFileSize = 1024 * 1024 * 5,    // 5MB
+                 maxRequestSize = 1024 * 1024 * 10) // 10MB
+
 @WebServlet(name = "updateProd", urlPatterns = {"/myStaff/updateProd"})
 public class updateProd extends HttpServlet {
 
@@ -63,6 +70,35 @@ public class updateProd extends HttpServlet {
                 up.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
                 up.setString(6, description);
                 up.setString(7, id);
+                
+                
+                    //this part is for save the image and combine change the imgae name to store
+            Part imagePart = request.getPart("image");
+            String submittedImageName = java.nio.file.Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+            
+            String imageExtension = "";
+            int i = submittedImageName .lastIndexOf('.');
+            
+            if(i >= 0){
+             imageExtension = submittedImageName.substring(i);
+            }
+
+           String newImageName = String.format("%s%s",id,imageExtension);
+            
+            String uploadPath = getServletContext().getInitParameter("uploadPath");
+
+            //java.io.File.separator
+            
+              String fullImagePath =  uploadPath + java.io.File.separator + newImageName;
+            
+              try(InputStream input = imagePart.getInputStream()){
+                  
+                  java.nio.file.Files.copy(
+                  input,
+                          java.nio.file.Paths.get(fullImagePath),
+                          java.nio.file.StandardCopyOption.REPLACE_EXISTING
+                  );
+              }
                 
                 int updated = up.executeUpdate();
                 if (updated > 0) {
