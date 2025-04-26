@@ -128,32 +128,34 @@
         <header>
             <div class="container">
                 <nav class="navbar">
-                   <% 
-if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute("isManager")) { 
-%>
-    <a href="${pageContext.request.contextPath}/myAdmin/AdminModule.jsp">Switch to<br> Admin</a>
-<% 
-} else if (session.getAttribute("isStaff") != null && (Boolean) session.getAttribute("isStaff")) { 
-%>
-    <a href="${pageContext.request.contextPath}/myStaff/staffProd.jsp">Back to<br> Staff Panel</a>
-<% 
-} 
-%>
+ <%
+                        if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute("isManager")) {
+                    %>
+                    <a href="${pageContext.request.contextPath}/myAdmin/AdminModule.jsp">Back to<br> Admin</a>
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="addProdM.jsp">Add Products</a></li>
+                        <li><a href="ControlProdM" class="active">Modify Products</a></li>
+                        <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
+                    </ul>
+                    <%
+                    } else if (session.getAttribute("isStaff") != null && (Boolean) session.getAttribute("isStaff")) {
+                    %>
+                    <div class="logo-container">
+                        <img src="${pageContext.request.contextPath}/images/logo.jpg" alt="${applicationScope.companyName} Logo" class="logo"> 
+                    </div>
+                    <h2>Staff Dashboard</h2>
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="staffProd.jsp">Home</a></li>
+                        <li><a href="addProdM.jsp">Add Products</a></li>
+                        <li><a href="ControlProdM" class="active">Modify Products</a></li>
+                        <li><a href="managePromo.jsp">Manage Promotions</a></li>
+                        <li><a href="ordersStatus.jsp">Manage Orders</a></li>
+                        <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
+                    </ul>    
 
-                    
-                        
-                            <div class="logo-container">
-                                <img src="${pageContext.request.contextPath}/images/logo.jpg" alt="${applicationScope.companyName} Logo" class="logo"> 
-                            </div>
-                            <h2>Staff Dashboard</h2>
-                            <ul class="nav-links" id="navLinks">
-                                <li><a href="staffProd.jsp">Home</a></li>
-                                <li><a href="addProdM.jsp">Add Products</a></li>
-                                <li><a href="ControlProdM" class="active">Modify Products</a></li>
-                                <li><a href="managePromo.jsp">Manage Promotions</a></li>
-                                <li><a href="ordersStatus.jsp">Manage Orders</a></li>
-                                <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
-                            </ul>
+                    <%
+                        }
+                    %>
                         </nav>
                     </div>
                 </header>
@@ -204,7 +206,7 @@ if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute(
                         <i class="fas fa-save"></i> Update Product
                     </button>
 
-                    <button type="button" class="exit-btn" onclick="window.location.href = 'staffProd.jsp'">
+                    <button type="button" class="exit-btn" onclick="history.back()">
                         <i class="fas fa-times"></i> Cancel
                     </button>
                     </form>
