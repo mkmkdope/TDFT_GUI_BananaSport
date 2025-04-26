@@ -213,7 +213,7 @@
                         <td style="padding:10px; border:1px solid #ddd;
                         color:<%= product.getProductQty() < 20 ? "red" : "inherit"%>;"> <!-- if the product quantity is less than 20 the font of quantity will become red to alert the user -->
                         <%= product.getProductQty()%>
-                    </td>
+         </td>
                         <td style="padding:10px; border:1px solid #ddd;"><%= product.getDescription()%></td>
 
                         <td style="padding:10px; border:1px solid #ddd;">
