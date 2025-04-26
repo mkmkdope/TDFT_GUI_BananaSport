@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Update Products - Staff Dashboard</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-       
+
         <style>
             body {
                 background-color: #f9f9f9;
@@ -25,7 +25,7 @@
                 font-weight: 600;
             }
 
-            
+
 
             table {
                 width: 100%;
@@ -100,7 +100,7 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
-          
+
 
             /* Add Font Awesome icons to buttons */
             button[name="action"][value="modify"]::before {
@@ -124,9 +124,9 @@
                 background-color: white;
             }
 
-           
-           
-           
+
+
+
         </style>
     </head>
     <body>
@@ -134,18 +134,18 @@
         <header>
             <div class="container">
                 <nav class="navbar">
-                    <% 
-if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute("isManager")) { 
-%>
-    <a href="${pageContext.request.contextPath}/myAdmin/AdminModule.jsp">Switch to<br> Admin</a>
-<% 
-} else if (session.getAttribute("isStaff") != null && (Boolean) session.getAttribute("isStaff")) { 
-%>
-    <a href="${pageContext.request.contextPath}/myStaff/staffProd.jsp">Back to<br> Staff Panel</a>
-<% 
-} 
-%>
-
+                    <%
+                        if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute("isManager")) {
+                    %>
+                    <a href="${pageContext.request.contextPath}/myAdmin/AdminModule.jsp">Back to<br> Admin</a>
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="addProdM.jsp">Add Products</a></li>
+                        <li><a href="ControlProdM" class="active">Modify Products</a></li>
+                        <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
+                    </ul>
+                    <%
+                    } else if (session.getAttribute("isStaff") != null && (Boolean) session.getAttribute("isStaff")) {
+                    %>
                     <div class="logo-container">
                         <img src="${pageContext.request.contextPath}/images/logo.jpg" alt="${applicationScope.companyName} Logo" class="logo"> 
                     </div>
@@ -157,7 +157,12 @@ if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute(
                         <li><a href="managePromo.jsp">Manage Promotions</a></li>
                         <li><a href="ordersStatus.jsp">Manage Orders</a></li>
                         <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
-                    </ul>
+                    </ul>    
+
+                    <%
+                        }
+                    %>
+
                 </nav>
             </div>
         </header>
@@ -170,7 +175,7 @@ if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute(
                 }
             %>
 
-           
+
             <div class="container">
 
                 <h1>Product List</h1>
@@ -205,7 +210,10 @@ if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute(
                         <td style="padding:10px; border:1px solid #ddd;"><%= product.getProductName()%></td>
                         <td style="padding:10px; border:1px solid #ddd;"><%= product.getProductCategory()%></td>
                         <td style="padding:10px; border:1px solid #ddd;">RM <%= product.getProductPrice()%></td>
-                        <td style="padding:10px; border:1px solid #ddd;"><%= product.getProductQty()%></td>
+                        <td style="padding:10px; border:1px solid #ddd;
+                        color:<%= product.getProductQty() < 20 ? "red" : "inherit"%>;"> <!-- if the product quantity is less than 20 the font of quantity will become red to alert the user -->
+                        <%= product.getProductQty()%>
+                    </td>
                         <td style="padding:10px; border:1px solid #ddd;"><%= product.getDescription()%></td>
 
                         <td style="padding:10px; border:1px solid #ddd;">

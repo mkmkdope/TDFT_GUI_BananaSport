@@ -115,15 +115,15 @@
                     <%
                         if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute("isManager")) {
                     %>
-                    <a href="${pageContext.request.contextPath}/myAdmin/AdminModule.jsp">Switch to<br> Admin</a>
-                        <%
-                        } else if (session.getAttribute("isStaff") != null && (Boolean) session.getAttribute("isStaff")) {
-                        %>
-                    <a href="${pageContext.request.contextPath}/myStaff/staffProd.jsp">Back to<br> Staff Panel</a>
-                        <%
-                            }
-                        %>
-
+                    <a href="${pageContext.request.contextPath}/myAdmin/AdminModule.jsp">Back to<br> Admin</a>
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="addProdM.jsp">Add Products</a></li>
+                        <li><a href="ControlProdM" class="active">Modify Products</a></li>
+                        <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
+                    </ul>
+                    <%
+                    } else if (session.getAttribute("isStaff") != null && (Boolean) session.getAttribute("isStaff")) {
+                    %>
                     <div class="logo-container">
                         <img src="${pageContext.request.contextPath}/images/logo.jpg" alt="${applicationScope.companyName} Logo" class="logo"> 
                     </div>
@@ -135,7 +135,11 @@
                         <li><a href="managePromo.jsp">Manage Promotions</a></li>
                         <li><a href="ordersStatus.jsp">Manage Orders</a></li>
                         <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
-                    </ul>
+                    </ul>    
+
+                    <%
+                        }
+                    %>
                 </nav>
             </div>
         </header>
