@@ -26,7 +26,7 @@
         <form action="${pageContext.request.contextPath}/myAdmin/AdminModule.jsp" method="get" style="display:inline;">
         <button>Back to Dashboard</button>
     </form>
-    <form method="post">
+    <form method="post" class="staff-form">
         <input type="hidden" name="managerId" value="<%= manager != null ? manager.getManagerId() : "" %>">
         <label for="managerName">Name:</label>
         <input type="text" id="managerName" name="managerName" value="<%= manager != null ? manager.getManagerName() : "" %>" required><br>
