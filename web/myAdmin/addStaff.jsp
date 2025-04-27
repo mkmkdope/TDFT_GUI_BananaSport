@@ -14,7 +14,7 @@
         <button>Back to Dashboard</button>
     </form>
     <h1>Add New Staff</h1>
-    <form method="post">
+    <form method="post" class="staff-form">
         <label for="staffName">Name:</label>
         <input type="text" id="staffName" name="staffName" required><br>
         <label for="staffEmail">Email:</label>
