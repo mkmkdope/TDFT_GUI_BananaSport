@@ -14,11 +14,11 @@ public class Products {
     private String imageLink;
     private String description;
 
-    // 默认构造方法
+
     public Products() {
     }
 
-    // 带参数的构造方法
+ 
     public Products(String productId, String productName, String productCategory, Integer productQty, Double productPrice,
             Integer productPopularity, Timestamp productCreatedTime,String imageLink,String description) {
         this.productId = productId;
@@ -32,7 +32,7 @@ public class Products {
         this.description = description;
     }
 
-    // Getter 和 Setter 方法
+  
     public String getProductId() {
         return productId;
     }

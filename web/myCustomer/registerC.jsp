@@ -119,7 +119,7 @@
         <div class="register-container">
             <h2>Register</h2>
 
-            <!-- Show error message if there is one -->
+            <!-- Show error message -->
             <div class="error">
                 <%
                     String error = (String) request.getAttribute("error");

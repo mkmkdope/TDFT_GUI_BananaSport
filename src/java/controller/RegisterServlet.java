@@ -71,7 +71,7 @@ public class RegisterServlet extends HttpServlet {
             int result = pstmt.executeUpdate();
 
             if (result > 0) {
-                // Set success message and redirect to login page
+                // Set success message go to login page
                 request.setAttribute("success", "Registration Successful! Please Login.");
                 request.getRequestDispatcher("/myCustomer/loginC.jsp").forward(request, response);
             } else {
