@@ -59,6 +59,38 @@ public class RegisterServlet extends HttpServlet {
         try {
             DBConnection db = new DBConnection();
             Connection conn = db.getConnection(); 
+            
+            // Check if username already exists
+            PreparedStatement checkUsername = conn.prepareStatement("SELECT * FROM CUSTOMERS WHERE username = ?");
+            checkUsername.setString(1, username);
+            ResultSet rsUsername = checkUsername.executeQuery();
+            
+            if (rsUsername.next()) {
+                request.setAttribute("error", "Username already exists. Please choose another one.");
+                request.getRequestDispatcher("/myCustomer/registerC.jsp").forward(request, response);
+                rsUsername.close();
+                checkUsername.close();
+                conn.close();
+                return;
+            }
+            
+            // Check if email already exists
+            PreparedStatement checkEmail = conn.prepareStatement("SELECT * FROM CUSTOMERS WHERE email = ?");
+            checkEmail.setString(1, email);
+            ResultSet rsEmail = checkEmail.executeQuery();
+            
+            if (rsEmail.next()) {
+                request.setAttribute("error", "Email address already registered. Please use another one.");
+                request.getRequestDispatcher("/myCustomer/registerC.jsp").forward(request, response);
+                rsEmail.close();
+                checkEmail.close();
+                rsUsername.close();
+                checkUsername.close();
+                conn.close();
+                return;
+            }
+            
+            // If no duplicate will proceed with registrater
             String sql = "INSERT INTO CUSTOMERS (customer_name, contact_number, email, username, password) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
@@ -79,18 +111,33 @@ public class RegisterServlet extends HttpServlet {
                 request.getRequestDispatcher("/myCustomer/registerC.jsp").forward(request, response);
             }
 
+            // Close all
             pstmt.close();
+            rsEmail.close();
+            checkEmail.close();
+            rsUsername.close();
+            checkUsername.close();
             conn.close();
 
         } catch (SQLException e) {
-            if (e.getMessage().contains("Duplicate entry")) {
-                request.setAttribute("error", "Username already exists. Choose another one.");
+            String errorMessage = e.getMessage();
+            if (errorMessage.contains("Duplicate entry") || 
+                errorMessage.contains("duplicate key") || 
+                errorMessage.contains("UNIQUE constraint") ||
+                errorMessage.contains("unique or primary key constraint")) {
+                
+                // Check which field caused the duplicate
+                if (errorMessage.toLowerCase().contains("username")) {
+                    request.setAttribute("error", "Username already exists. Please choose another one.");
+                } else if (errorMessage.toLowerCase().contains("email")) {
+                    request.setAttribute("error", "Email address already registered. Please use another one.");
+                } else {
+                    request.setAttribute("error", "Registration failed: Username or email already exists.");
+                }
             } else {
                 request.setAttribute("error", "Database error: " + e.getMessage());
             }
             request.getRequestDispatcher("/myCustomer/registerC.jsp").forward(request, response);
-        }
-    }
+        }
+    }
 }
-
-
