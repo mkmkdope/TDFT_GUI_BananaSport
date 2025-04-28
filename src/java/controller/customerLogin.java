@@ -40,16 +40,16 @@ public class customerLogin extends HttpServlet {
             DBConnection db = new DBConnection();
             Connection conn = db.getConnection(); 
             
-            // Prepare SQL query to check credentials
+            // Prepare SQL query to check
             String sql = "SELECT * FROM CUSTOMERS WHERE username = ? AND password = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
-            pstmt.setString(2, password); // Note: In production, you should hash passwords
+            pstmt.setString(2, password);
             
             rs = pstmt.executeQuery();
             
             if (rs.next()) {
-                // Valid credentials - create session
+                // Valid create session
                 HttpSession session = request.getSession();
                 session.setAttribute("username", username);
                 session.setAttribute("customerName", rs.getString("customer_name"));
@@ -61,8 +61,8 @@ public class customerLogin extends HttpServlet {
                 // Redirect to products page
                 response.sendRedirect(request.getContextPath() + "/showProd");
             } else {
-                // Invalid credentials
-                request.setAttribute("error", "Invalid username or password");
+                // Invalid 
+                request.setAttribute("error", "Invalid Username or Password");
                 request.getRequestDispatcher("/myCustomer/loginC.jsp").forward(request, response);
             }
         } catch (SQLException e) {

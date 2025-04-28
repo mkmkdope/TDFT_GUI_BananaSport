@@ -1,0 +1,216 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="model.Products" %>
+<%
+    Products product = (Products) request.getAttribute("product");
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Update Product - Staff Dashboard</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+
+        <style>
+            .section {
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                margin-bottom: 30px;
+                background-color: white;
+            }
+
+            .product-form {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 30px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .form-group {
+                margin-bottom: 25px;
+            }
+
+            .form-group label {
+                display: block;
+                font-weight: 500;
+                margin-bottom: 8px;
+                color: #333;
+                font-size: 16px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 12px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                font-size: 16px;
+                transition: border-color 0.3s ease;
+                background-color: #f9f9f9;
+            }
+
+            .form-group input:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                border-color: #f4d746;
+                outline: none;
+                background-color: white;
+            }
+
+            .form-group textarea {
+                resize: vertical;
+                min-height: 120px;
+            }
+
+            .submit-btn {
+                background: linear-gradient(135deg, #f4d746, #f4eb36);
+                color: #333;
+                padding: 15px 30px;
+                border: none;
+                border-radius: 8px;
+                font-size: 18px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                width: 100%;
+                margin-top: 20px;
+            }
+
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .exit-btn {
+                background: linear-gradient(135deg, #ff4b4b, #ff0000);
+                color: white;
+                padding: 15px 30px;
+                border: none;
+                border-radius: 8px;
+                font-size: 18px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .exit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .page-title {
+                text-align: center;
+                margin: 30px 0;
+                color: #333;
+                font-size: 28px;
+                font-weight: 600;
+            }
+
+
+
+
+
+
+
+        </style>
+    </head>
+
+  
+    <body>
+        <!-- Header Section -->
+        <header>
+            <div class="container">
+                <nav class="navbar">
+ <%
+                        if (session.getAttribute("isManager") != null && (Boolean) session.getAttribute("isManager")) {
+                    %>
+                    <a href="${pageContext.request.contextPath}/myAdmin/AdminModule.jsp">Back to<br> Admin</a>
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="addProdM.jsp">Add Products</a></li>
+                        <li><a href="ControlProdM" class="active">Modify Products</a></li>
+                        <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
+                    </ul>
+                    <%
+                    } else if (session.getAttribute("isStaff") != null && (Boolean) session.getAttribute("isStaff")) {
+                    %>
+                    <div class="logo-container">
+                        <img src="${pageContext.request.contextPath}/images/logo.jpg" alt="${applicationScope.companyName} Logo" class="logo"> 
+                    </div>
+                    <h2>Staff Dashboard</h2>
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="staffProd.jsp">Home</a></li>
+                        <li><a href="addProdM.jsp">Add Products</a></li>
+                        <li><a href="ControlProdM" class="active">Modify Products</a></li>
+                        <li><a href="managePromo.jsp">Manage Promotions</a></li>
+                        <li><a href="ordersStatus.jsp">Manage Orders</a></li>
+                        <li><a href="${pageContext.request.contextPath}/LogoutServlet">Logout</a></li>
+                    </ul>    
+
+                    <%
+                        }
+                    %>
+                        </nav>
+                    </div>
+                </header>
+
+                <main class="container">
+                    <div class="section">
+                        <h1 class="page-title">Update Product</h1>
+                
+                        <form action="updateProd" method="POST" class="product-form" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="<%= product.getProductId() %>">
+
+                    <div class="form-group">
+                        <label for="name"><i class="fas fa-tag"></i> Product Name</label>
+                        <input type="text" id="name" name="name" value="<%= product.getProductName()%>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category"><i class="fas fa-list"></i> Category</label>
+                        <select id="category" name="category" required>
+                            <option value="Cardio Equipment" <%= "Cardio Equipment".equals(product.getProductCategory()) ? "selected" : ""%>>Cardio Equipment</option>
+                            <option value="Strength Training" <%= "Strength Training".equals(product.getProductCategory()) ? "selected" : ""%>>Strength Training</option>
+                            <option value="Yoga" <%= "Yoga".equals(product.getProductCategory()) ? "selected" : ""%>>Yoga & Pilates</option>
+                            <option value="Accessories" <%= "Accessories".equals(product.getProductCategory()) ? "selected" : ""%>>Accessories</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price"><i class="fas fa-dollar-sign"></i> Price</label>
+                        <input type="number" id="price" name="price" value="<%= product.getProductPrice()%>" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity"><i class="fas fa-box"></i> Quantity</label>
+                        <input type="number" id="quantity" name="quantity" value="<%= product.getProductQty()%>" required>
+                    </div>
+                    
+                     <div class="form-group">
+                        <label for="image"><i class="fas fa-image"></i> Product Image</label>
+                        <input type="file" id="image" name="image" accept="image/*" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description"><i class="fas fa-align-left"></i> Description</label>
+                        <textarea id="description" name="description" required><%= product.getDescription() != null ? product.getDescription() : ""%></textarea>
+                    </div>
+
+                    <button type="submit" name="update" value="update" class="submit-btn">
+                        <i class="fas fa-save"></i> Update Product
+                    </button>
+
+                    <button type="button" class="exit-btn" onclick="history.back()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    </form>
+            </div>
+        </main>
+</body>
+</html>
