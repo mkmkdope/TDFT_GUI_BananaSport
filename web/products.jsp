@@ -11,6 +11,141 @@
     String category = request.getParameter("category");
     String sort = request.getParameter("sort");
 %>
+<style>
+    /* Container */
+    .container {
+        width: 90%;
+        max-width: 1300px;
+        margin: 0 auto;
+    }
+
+    /* Hero Section */
+    .hero {
+        background: black;
+        color: white;
+        padding: 30px 0;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    /* Product Filters */
+    .product-filters {
+        margin-bottom: 30px;
+    }
+
+    .filter-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center;
+    }
+
+    .filter-group {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        width: 250px;
+    }
+
+
+    .filter-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .filter-list li {
+        margin-bottom: 10px;
+    }
+
+    .filter-list li a {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .filter-list li a.active {
+        color: #fbc02d; /* Yellow color for active link */
+        font-weight: bold;
+    }
+
+    .sort-select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    /* Products Section */
+    .products-section {
+        padding: 30px 0;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2rem;
+    }
+
+    /* Products Grid */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    /* Product Card */
+    .product-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.2s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .product-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        margin-bottom: 15px;
+    }
+
+    .product-title {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .product-category,
+    .product-qty,
+    .product-price {
+        font-size: 0.95rem;
+        margin-bottom: 5px;
+    }
+    
+    /* Buttons */
+    .btn {
+        background: linear-gradient(to right, #fdd835, #fbc02d); /* Yellow gradient */
+        border: none;
+        color: #333; /* Darker text for better contrast */
+        padding: 8px 15px;
+        margin: 5px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background 0.3s ease, color 0.3s ease;
+        font-weight: bold;
+    }
+
+    .btn:hover {
+        background: linear-gradient(to right, #f9a825, #fbc02d); /* Darker yellow on hover */
+        color: white; /* Text turns white on hover */
+    }
+</style>
 
 <section class="hero">
     <div class="container">
@@ -34,8 +169,8 @@
                     <li><a href="showProd?category=Accessories" class="<%= "Accessories".equals(category) ? "active" : ""%>">Accessories</a></li>
                 </ul>
             </div>
-                
- 
+
+
 
             <!-- Sort By -->
             <div class="filter-group">

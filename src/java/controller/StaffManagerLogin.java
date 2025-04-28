@@ -24,7 +24,7 @@ public class StaffManagerLogin extends HttpServlet {
         String password = request.getParameter("password");
         
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-            request.setAttribute("error", "Email and password are required");
+            request.setAttribute("error", "Email and Password are Required");
             request.getRequestDispatcher("/myStaff/loginM.jsp").forward(request, response);
             return;
         }
@@ -102,7 +102,7 @@ public class StaffManagerLogin extends HttpServlet {
                 }
             } else {
                 // Invalid credentials
-                request.setAttribute("error", "Invalid email or password");
+                request.setAttribute("error", "Invalid Email or Password");
                 request.getRequestDispatcher("/myStaff/loginM.jsp").forward(request, response);
             }
         } catch (SQLException e) {

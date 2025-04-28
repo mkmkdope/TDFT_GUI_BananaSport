@@ -162,7 +162,7 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                height: 30vh;
+                height: 60vh;
                 color: #555;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 text-align: center;
@@ -211,7 +211,7 @@
                 border-radius: 8px;
                 border: 1px solid #ffd600;
             }
-            
+
             .promotion-info {
                 display: flex;
                 align-items: center;
@@ -221,38 +221,41 @@
                 border-radius: 6px;
                 margin-bottom: 10px;
             }
-            
+
             .promotion-details {
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
             }
-            
+
             .promotion-name {
                 font-weight: bold;
                 font-size: 18px;
                 color: #333;
             }
-            
+
             .promotion-value {
                 font-size: 16px;
                 color: #e65100;
             }
-            
+
             .promotion-remove {
-                background-color: #f44336;
+                background: linear-gradient(to right, #f44336, #e57373);
                 color: white;
-                border: none;
-                border-radius: 4px;
-                padding: 5px 10px;
+                border: none; /* removed border */
+                border-radius: 8px;
+                padding: 10px 20px;
+                margin-right: 20px;
                 cursor: pointer;
+                font-size: 16px;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;            
             }
-            
+
             .discount-row {
                 background-color: #fff8e1;
                 font-weight: bold;
             }
-            
+
             .promotion-badge {
                 display: inline-block;
                 padding: 5px 10px;
@@ -262,20 +265,20 @@
                 font-size: 14px;
                 margin-left: 10px;
             }
-            
+
             .promotion-alert {
                 padding: 10px;
                 margin: 10px 0;
                 border-radius: 4px;
                 font-size: 14px;
             }
-            
+
             .alert-info {
                 background-color: #e3f2fd;
                 border: 1px solid #2196f3;
                 color: #0d47a1;
             }
-            
+
             .alert-warning {
                 background-color: #fff8e1;
                 border: 1px solid #ffc107;
@@ -292,7 +295,7 @@
                 String message = (String) session.getAttribute("message");
                 String error = (String) session.getAttribute("error");
                 String successMessage = (String) request.getAttribute("successMessage");
-                
+
                 if (message != null) {
             %>
             <div class="alert alert-success" style="background-color: #dff0d8; color: #3c763d; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
@@ -312,7 +315,7 @@
                 if (successMessage != null) {
             %>
             <div class="alert alert-success" style="background-color: #dff0d8; color: #3c763d; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
-                <%= successMessage %>
+                <%= successMessage%>
             </div>
             <%
                 }
@@ -343,14 +346,14 @@
                 double discountAmount = 0.0;
                 double totalAmount = 0.0;
                 boolean hasItems = false;  // Flag to check if cart has items
-                
+
                 // Get applied promotion from session
                 Integer appliedPromotionId = (Integer) session.getAttribute("appliedPromotionId");
                 String appliedPromotionName = (String) session.getAttribute("appliedPromotionName");
                 String appliedPromotionType = (String) session.getAttribute("appliedPromotionType");
                 Double appliedDiscountValue = (Double) session.getAttribute("appliedDiscountValue");
                 Double appliedMinPurchase = (Double) session.getAttribute("appliedMinPurchase");
-                
+
                 boolean promotionApplied = false;
                 String promotionMessage = null;
 
@@ -373,35 +376,35 @@
 
                     if (hasItems) {
             %>
-            
+
             <!-- Display applied promotion if any -->
-            <% if (appliedPromotionId != null && appliedPromotionName != null) { %>
+            <% if (appliedPromotionId != null && appliedPromotionName != null) {%>
             <div class="promotion-section">
                 <h3><i class="fas fa-tag"></i> Applied Promotion</h3>
                 <div class="promotion-info">
                     <div class="promotion-details">
-                        <span class="promotion-name"><%= appliedPromotionName %></span>
-                        <% if ("percentage".equals(appliedPromotionType)) { %>
-                            <span class="promotion-value"><%= appliedDiscountValue.intValue() %>% discount</span>
-                        <% } else if ("fixed_amount".equals(appliedPromotionType)) { %>
-                            <span class="promotion-value">RM <%= String.format("%.2f", appliedDiscountValue) %> off</span>
-                        <% } else if ("free_shipping".equals(appliedPromotionType)) { %>
-                            <span class="promotion-value">Free shipping on orders over RM <%= String.format("%.2f", appliedMinPurchase) %></span>
+                        <span class="promotion-name"><%= appliedPromotionName%></span>
+                        <% if ("percentage".equals(appliedPromotionType)) {%>
+                        <span class="promotion-value"><%= appliedDiscountValue.intValue()%>% discount</span>
+                        <% } else if ("fixed_amount".equals(appliedPromotionType)) {%>
+                        <span class="promotion-value">RM <%= String.format("%.2f", appliedDiscountValue)%> off</span>
+                        <% } else if ("free_shipping".equals(appliedPromotionType)) {%>
+                        <span class="promotion-value">Free shipping on orders over RM <%= String.format("%.2f", appliedMinPurchase)%></span>
                         <% } %>
                     </div>
                     <form action="${pageContext.request.contextPath}/RemovePromotion" method="post">
-                        <button type="submit" class="promotion-remove">Remove</button>
+                        <button type="submit" class="promotion-remove"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 </div>
             </div>
             <% } else { %>
             <div style="text-align: center; margin-bottom: 20px;">
-                <a href="${pageContext.request.contextPath}/myCustomer/promotions.jsp" class="btn-proceed" style="background: linear-gradient(to right, #4CAF50, #8BC34A); display: inline-block;">
+                <a href="${pageContext.request.contextPath}/myCustomer/promotions.jsp" class="btn-proceed" style="background: linear-gradient(to right, #FFC107, #FFEB3B); display: inline-block; text-decoration: none; border: 3px solid;">
                     <i class="fas fa-tag"></i> Browse Available Promotions
                 </a>
             </div>
             <% } %>
-            
+
             <table>
                 <thead>
                     <tr>
@@ -426,24 +429,28 @@
                             String imageLink = rs.getString("IMAGELINK");  // Retrieve the image link
                             double itemTotal = quantity * price;
                             subtotalAmount += itemTotal;
-                            
+
                             // Fetch available product quantity
                             PreparedStatement availQtyStmt = null;
                             ResultSet availQtyRs = null;
                             int availableQuantity = 0;
-                            
+
                             try {
                                 String availQtyQuery = "SELECT PRODUCT_QTY FROM PRODUCTS WHERE PRODUCT_ID = ?";
                                 availQtyStmt = conn.prepareStatement(availQtyQuery);
                                 availQtyStmt.setString(1, productId);
                                 availQtyRs = availQtyStmt.executeQuery();
-                                
+
                                 if (availQtyRs.next()) {
                                     availableQuantity = availQtyRs.getInt("PRODUCT_QTY");
                                 }
                             } finally {
-                                if (availQtyRs != null) availQtyRs.close();
-                                if (availQtyStmt != null) availQtyStmt.close();
+                                if (availQtyRs != null) {
+                                    availQtyRs.close();
+                                }
+                                if (availQtyStmt != null) {
+                                    availQtyStmt.close();
+                                }
                             }
                     %>
                     <tr>
@@ -458,14 +465,14 @@
                                     <input type="hidden" name="productId" value="<%= productId%>">
                                     <input type="hidden" name="action" value="update">
                                     <button type="button" onclick="changeQuantity('<%= productId%>', -1)" class="btn-quantity"><i class="fa-solid fa-minus"></i></button>
-                                    <input type="text" name="quantity" id="qty-<%= productId%>" value="<%= quantity%>" readonly class="quantity-input" data-max-qty="<%= availableQuantity %>">
-                                    <button type="button" onclick="changeQuantity('<%= productId%>', 1)" class="btn-quantity" <%= quantity >= availableQuantity ? "disabled style='opacity: 0.5; cursor: not-allowed;'" : "" %>><i class="fa-solid fa-plus"></i></button>
+                                    <input type="text" name="quantity" id="qty-<%= productId%>" value="<%= quantity%>" readonly class="quantity-input" data-max-qty="<%= availableQuantity%>">
+                                    <button type="button" onclick="changeQuantity('<%= productId%>', 1)" class="btn-quantity" <%= quantity >= availableQuantity ? "disabled style='opacity: 0.5; cursor: not-allowed;'" : ""%>><i class="fa-solid fa-plus"></i></button>
                                 </form>
                                 <% if (quantity >= availableQuantity) { %>
                                 <div style="font-size: 12px; color: #ff0000; margin-top: 5px;">Max quantity reached</div>
-                                <% } else { %>
-                                <div style="font-size: 12px; color: #666; margin-top: 5px;"><%= availableQuantity - quantity %> more available</div>
-                                <% } %>
+                                <% } else {%>
+                                <div style="font-size: 12px; color: #666; margin-top: 5px;"><%= availableQuantity - quantity%> more available</div>
+                                <% }%>
                             </div>
                         </td>
                         <td>RM <%= String.format("%.2f", price)%></td>
@@ -482,7 +489,7 @@
                     </tr>
                     <%
                         }
-                        
+
                         // Calculate discount if promotion is applied
                         if (appliedPromotionId != null && appliedPromotionName != null) {
                             if (subtotalAmount >= appliedMinPurchase) {
@@ -501,28 +508,28 @@
                                 promotionMessage = "You need to spend RM " + String.format("%.2f", (appliedMinPurchase - subtotalAmount)) + " more to qualify for this promotion.";
                             }
                         }
-                        
+
                         // Calculate final total
                         totalAmount = subtotalAmount - discountAmount;
                     %>
-                    
+
                     <tr class="total-row">
                         <td colspan="5" style="text-align: right;"><strong>Subtotal:</strong></td>
                         <td><strong>RM <%= String.format("%.2f", subtotalAmount)%></strong></td>
                         <td></td>
                     </tr>
-                    
-                    <% if (promotionApplied) { %>
+
+                    <% if (promotionApplied) {%>
                     <tr class="discount-row">
                         <td colspan="5" style="text-align: right;">
                             <strong>Discount:</strong>
-                            <span class="promotion-badge"><%= appliedPromotionName %></span>
+                            <span class="promotion-badge"><%= appliedPromotionName%></span>
                         </td>
                         <td><strong>- RM <%= String.format("%.2f", discountAmount)%></strong></td>
                         <td></td>
                     </tr>
-                    <% } %>
-                    
+                    <% }%>
+
                     <tr class="total-row">
                         <td colspan="5" style="text-align: right;"><strong>Total Amount:</strong></td>
                         <td><strong>RM <%= String.format("%.2f", totalAmount)%></strong></td>
@@ -530,21 +537,21 @@
                     </tr>
                 </tbody>
             </table>
-            
-            <% if (promotionMessage != null) { %>
-            <div class="promotion-alert <%= promotionApplied ? "alert-info" : "alert-warning" %>">
-                <i class="<%= promotionApplied ? "fas fa-info-circle" : "fas fa-exclamation-triangle" %>"></i>
-                <%= promotionMessage %>
+
+            <% if (promotionMessage != null) {%>
+            <div class="promotion-alert <%= promotionApplied ? "alert-info" : "alert-warning"%>">
+                <i class="<%= promotionApplied ? "fas fa-info-circle" : "fas fa-exclamation-triangle"%>"></i>
+                <%= promotionMessage%>
             </div>
-            <% } %>
+            <% }%>
 
             <div style="text-align: right; margin-top: 20px;">
                 <form action="payment.jsp" method="post">
-                    <input type="hidden" name="subtotal" value="<%= subtotalAmount %>">
-                    <input type="hidden" name="discount" value="<%= discountAmount %>">
-                    <input type="hidden" name="total" value="<%= totalAmount %>">
+                    <input type="hidden" name="subtotal" value="<%= subtotalAmount%>">
+                    <input type="hidden" name="discount" value="<%= discountAmount%>">
+                    <input type="hidden" name="total" value="<%= totalAmount%>">
                     <% if (promotionApplied && "free_shipping".equals(appliedPromotionType)) { %>
-                        <input type="hidden" name="freeShipping" value="true">
+                    <input type="hidden" name="freeShipping" value="true">
                     <% } %>
                     <button type="submit" class="btn-proceed">Proceed to Payment</button>
                 </form>
@@ -553,7 +560,8 @@
             } else {
             %>
             <div class="empty-cart">
-                <p>Your cart is empty</p>
+                <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Empty Cart" />
+                <p>Your Cart is Empty</p>
                 <a href="${pageContext.request.contextPath}/showProd" class="btn-update" style="display: inline-block; margin-top: 10px; text-decoration: none;">
                     Continue Shopping
                 </a>
@@ -600,7 +608,7 @@
             // Ensure the quantity does not go below 0 or above max available
             if (newQty >= 0 && newQty <= maxQty) {
                 qtyField.value = newQty;
-                
+
                 // Now submit the form automatically after updating the quantity
                 var form = document.getElementById('updateForm-' + productId);
                 form.submit();

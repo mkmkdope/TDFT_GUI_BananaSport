@@ -6,23 +6,45 @@
 <head>
     <title>Staff and Manager Login</title>
     <style>
-        .login-container {
-            max-width: 400px;
-            margin: 0 auto;
+        /* Reuse the styles from the first JSP */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
         h2 {
-            text-align: center;
             color: #333;
+            margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
+
         input {
             display: block;
             width: 100%;
@@ -32,9 +54,10 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
         button {
-            background-color: #333;
-            color: white;
+            background-color: #FFC107; /* Yellow for staff & manager login */
+            font-weight: bold;
             padding: 10px 15px;
             border: none;
             border-radius: 4px;
@@ -42,52 +65,62 @@
             font-size: 16px;
             width: 100%;
         }
+
         button:hover {
-            background-color: grey;
+            background-color: #FFB300; /* Slightly darker yellow on hover */
         }
+
         .error {
             color: red;
             font-weight: bold;
             margin-bottom: 15px;
         }
+
         .info {
             margin-top: 20px;
             text-align: center;
             color: #666;
         }
-        .access-info {
-            background-color: #e7f3ff;
-            border-left: 4px solid #2196F3;
-            padding: 10px;
-            margin: 15px 0;
-            font-size: 0.9em;
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Staff and Manager Login</h2>
-        
-        <!-- Show error message if there is one -->
-        <div class="error">
-            <%
-                String error = (String) request.getAttribute("error");
-                if (error != null) {
-                    out.println(error);
-                }
-            %>
+    <div class="main-content">
+        <div class="login-container">
+            <h2 style="text-align: center;">Staff and Manager Login</h2>
+            
+            <!-- Show error message if there is one -->
+            <div class="error">
+                <%
+                    String error = (String) request.getAttribute("error");
+                    if (error != null) {
+                        out.println(error);
+                    }
+                %>
+            </div>
+            
+            <!-- Login form -->
+            <form action="${pageContext.request.contextPath}/StaffManagerLogin" method="post">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required />
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required />
+                
+                <button type="submit">Login</button>
+            </form>
         </div>
-        
-        <!-- Login form -->
-        <form action="${pageContext.request.contextPath}/StaffManagerLogin" method="post">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required />
-            
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required />
-            
-            <button type="submit">Login</button>
-        </form>
     </div>
+
+    <footer>
+        <p>${applicationScope.companyCopyright}</p>
+    </footer>
 </body>
-</html> 
+</html>

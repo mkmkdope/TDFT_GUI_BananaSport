@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <!-- Please update the images path -->
+    <context-param>
+        <param-name>uploadPath</param-name>
+        <param-value>C:\Users\ASUS\Desktop\BananaSport\web\images</param-value>
+    </context-param>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <resource-ref>
+        <description>Derby Datasource</description>
+        <res-ref-name>jdbc/tree</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+    <!-- Application-wide initialization parameters -->
+    <context-param>
+        <param-name>companyName</param-name>
+        <param-value>Banana Sport</param-value>
+    </context-param>
+    <context-param>
+        <param-name>companyEmail</param-name>
+        <param-value>info@bananasport.com</param-value>
+    </context-param>
+    <context-param>
+        <param-name>companyCopyright</param-name>
+        <param-value>© 2025 Banana Sport. All rights reserved.</param-value>
+    </context-param>
+    <!-- Add to Cart Mapping -->
+    <servlet>
+        <servlet-name>AddCart</servlet-name>
+        <jsp-file>/myCustomer/addToCart.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddCart</servlet-name>
+        <url-pattern>/AddCart</url-pattern>
+    </servlet-mapping>
+    <!-- Login Servlet Mapping -->
+    <servlet>
+        <servlet-name>customerLogin</servlet-name>
+        <servlet-class>controller.customerLogin</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>customerLogin</servlet-name>
+        <url-pattern>/custLogin</url-pattern>
+    </servlet-mapping>
+    <!-- Register Servlet Mapping -->
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>controller.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+    <!-- Logout Servlet Mapping -->
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>controller.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <!-- Update Profile Servlet Mapping -->
+    <servlet>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <servlet-class>controller.UpdateProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <url-pattern>/updateProfile</url-pattern>
+    </servlet-mapping>
+    <!-- Update Order Status Servlet Mapping -->
+    <servlet>
+        <servlet-name>UpdateOrderStatusServlet</servlet-name>
+        <servlet-class>controller.UpdateOrderStatusServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateOrderStatusServlet</servlet-name>
+        <url-pattern>/UpdateOrderStatusServlet</url-pattern>
+    </servlet-mapping>
+</web-app>

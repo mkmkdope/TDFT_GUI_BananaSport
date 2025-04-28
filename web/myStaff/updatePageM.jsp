@@ -212,12 +212,5 @@
                     </form>
             </div>
         </main>
-
-        <script>
-            // Mobile menu toggle
-            document.getElementById('mobileMenuToggle').addEventListener('click', function () {
-                document.getElementById('navLinks').classList.toggle('show');
-            });
-        </script>
 </body>
 </html>

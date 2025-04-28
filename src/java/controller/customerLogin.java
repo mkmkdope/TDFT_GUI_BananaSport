@@ -62,7 +62,7 @@ public class customerLogin extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/showProd");
             } else {
                 // Invalid credentials
-                request.setAttribute("error", "Invalid username or password");
+                request.setAttribute("error", "Invalid Username or Password");
                 request.getRequestDispatcher("/myCustomer/loginC.jsp").forward(request, response);
             }
         } catch (SQLException e) {
